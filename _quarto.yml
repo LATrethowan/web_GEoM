@@ -1,0 +1,41 @@
+project:
+  type: website
+
+website:
+    title: 'GEoM'
+    navbar:
+     title: false
+     logo: 'GEoM_logo.png'
+     left:
+      - text: Data & Code
+        menu: 
+          - text: Zenodo  
+            href: https://zenodo.org/search?q=metadata.creators.person_or_org.name%3A%22Trethowan%2C%20Liam%22&l=list&p=1&s=10&sort=newest
+          - text: Figshare
+            href: https://figshare.com/authors/Liam_Trethowan/8268603
+      - text: More
+        menu:
+        - text: Island Megadiversity
+          href: https://liamtrethowan.com
+        - text: TIPAs
+          href: https://www.kew.org/science/our-science/projects/tropical-important-plant-areas-indonesian-new-guinea
+        - text: Publications
+          href: https://scholar.google.com/citations?user=FgqqcMMAAAAJ&hl=en&oi=ao
+      - text: Liam
+        href: about.qmd
+      - people.qmd
+    page-footer:
+     left: '**G**eographic **E**cology **o**f **M**egadiversity'
+     right: "<img src='GEoM_logo.png' style='height: 30px;'></a>"
+     
+    
+format:
+  html:
+    theme:
+      - sandstone
+      - brand
+    css: styles.css
+    toc: true
+
+editor: visual
+
