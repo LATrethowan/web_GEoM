@@ -25,6 +25,7 @@ Our main focus is tropical plant megadiversity, often with collaborative project
 :::
 
 ```{r}
+#| label: map
 #| echo: false
 #| error: false
 #| warning: false
