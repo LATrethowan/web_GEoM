@@ -30,7 +30,7 @@ Our main focus is tropical plant megadiversity, often with collaborative project
 #| error: false
 #| warning: false
 
-if(!require('pacman'))install.packages('pacman')
+if(!require('pacman'))install.packages('pacman',repos = "http://cran.us.r-project.org")
 pacman::p_load(rsconnect,geodata,tidyverse)
 
 library(rsconnect)
