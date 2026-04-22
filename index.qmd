@@ -1,0 +1,121 @@
+---
+website:
+    title: 'GEoM'
+    navbar:
+     title: false
+     logo: 'GEoM_logo.png'
+     left:
+      - about.qmd
+
+title: Geographic Ecology of Megadiversity 
+---
+
+The GEoM lab tests ecological theory across geographic scales. We unite disciplines from evolution to the physical sciences to deliver the results required for on-the-ground action.
+
+Our goal is to support evidence-based sustainable development.
+
+Our main focus is tropical plant megadiversity, often with collaborative projects studying the islands of Indonesia.
+
+::: {.column-margin}
+![11k Malesian species **T**raits **f**rom **T**axonomic **D**escriptions](TfTD_logo_creator_stylised.png){width=300}
+:::
+
+::: {.column-margin}
+![13 **T**ropical **I**mportant **P**lant **A**reas designated in Indonesian Papua](TIPAs_logo_4.png){width=300}
+:::
+
+```{r}
+#| echo: false
+#| error: false
+#| warning: false
+
+library(tidyverse)
+library(geodata)
+
+Indo_elev=elevation_30s('Indonesia',res=10,path = getwd()) %>%
+  as.data.frame(Indo_elev,xy=T) %>%
+  rename(elv=IDN_elv_msk) %>% drop_na() %>% 
+  distinct() %>%
+  mutate(x=round(x,1),y=round(y,1)) %>%
+    unite('coord',c(x,y)) %>% 
+    group_by(coord) %>%
+    mutate('mean_elv'=mean(elv)) %>%
+    select(-elv) %>%
+  distinct() %>%
+  ungroup() %>%
+  filter(mean_elv>-.1) %>%
+  separate('coord',into = c('Long','Lat'),sep='_') %>%
+  mutate('Long'=as.numeric(Long),
+         'Lat'=as.numeric(Lat))
+
+#### create joint TIPAs sf and import here
+## how to do other map - just copy IsFor code?
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+world=ne_countries(scale = 'medium',returnclass='sf')
+
+fig_map=read_csv('data_plotmeta_params_tdwg.csv') %>% 
+  separate(site,into=c('lat','long'),sep='_',remove = F) %>% 
+  mutate('lat'=as.numeric(lat),
+         'long'=as.numeric(long)) %>%
+  ggplot() +
+  geom_sf(data = world,colour='grey90',size=.01) +
+  geom_point(aes(x=long,y=lat,
+                 size = ntrees,colour =Island),stroke=.2,shape=21) +
+  scale_size_area(labels=c('10k trees','20k trees'),
+                  breaks=c(10000,20000)) +
+  theme(panel.background = element_blank(),
+        plot.background = element_blank(),
+        legend.title = element_blank(),
+        legend.direction = 'horizontal',
+        legend.position = 'inside',
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.position.inside = c(.5,.9),
+        legend.text = element_text(size=7,margin = margin(l=0)),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  ylim(-35,35) +
+  xlab(NULL) +
+  ylab(NULL) +
+  guides(shape = guide_legend(title = NULL),
+         colour='none') +
+  scale_colour_manual(values=c('#E6B400FF','#420F75FF')) +
+  annotate('label',x=c(143,-18),y=c(15,-20),size=3,
+           label=c('Island','Continent'),fill=c('#E6B400FF','#420F75FF'),colour='white')  +
+  annotate('text',x=-100,y=-20,size=2,
+           label='IsFor dataset\nc. 850,000 trees.')
+
+plotmap=ggplot()  +
+  geom_raster(data=Indo_elev,aes(x=Long,y=Lat,fill=sqrt(mean_elv)),show.legend = F) +
+  geom_jitter(data=read_csv('indoplot_richness.csv') %>% mutate('Richness'=interpolated_alpha),
+       aes(x=Long,y=Lat,colour=Richness),shape=21,size=2,stroke=.7) +
+  scale_colour_fermenter(palette='Spectral') +
+  scale_fill_distiller(palette = 'Greys')  +
+  theme(plot.margin = margin_auto(0),
+        plot.background = element_blank(),
+        panel.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        legend.position.inside  = c(.8,.8),
+        legend.direction = 'horizontal',
+        legend.title.position = 'top',
+        legend.title = element_text(size=8),
+        legend.key.height = unit(2,'mm'),
+        legend.background = element_blank()) +
+  guides(colour=guide_coloursteps(position = 'inside')) +
+  labs(caption='Number of tree species in forest plots across Indonesia.\nSee https://doi.org/10.1111/ecog.07038 for details.')
+
+library(cowplot)
+
+ggdraw() +
+  draw_plot(plotmap,x=.2,y=0,width = .8,height = .6) +
+  draw_plot(fig_map,x=0,y=.35,width = .7,height = .65) 
+
+```
+
+

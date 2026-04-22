@@ -1,0 +1,35 @@
+---
+title: "Liam Trethowan"
+navbar:
+     title: false
+     logo: 'GEoM_logo.png'
+     left:
+      - about.qmd
+about:
+  template: trestles
+  image: profile2.png
+
+
+---
+
+I am a Research Leader at Herbarium Kew - building collaborative solutions for interesting problems. My focus is simple - the ecology and geography of megadiversity and how this knowledge can boost conservation. My work often develops hierarchical joint species distribution/abundance models to understand how evolution, traits and environment shape communities. Active personal and career development of people is a big part of what I think about - making the team my priority and success together the most rewarding part of my day-to-day.  
+
+## Education
+
+Manchester Metropolitan University x
+RBG Kew | 
+PhD Forest Ecology of Sulawesi | Sept 2015 - Oct 2018  
+
+University of Leeds |   
+1st class BSc Ecology (Industrial year) | Sept 2011 - June 2015
+
+## Experience
+
+RBG Kew | Research Leader | August 2024 - present
+
+RBG Kew | Postdoctoral Research Associate - West Papuan spatial prioritisation | April 2022 - July 2024
+
+RBG Kew | Postdoctoral Research Associate - Wallacean green economy | April 2019 - April 2022
+
+
+
