@@ -29,6 +29,10 @@ Our main focus is tropical plant megadiversity, often with collaborative project
 #| error: false
 #| warning: false
 
+library(rsconnect)
+
+rsconnect::writeManifest(contentCategory = "site")
+
 library(tidyverse)
 library(geodata)
 
